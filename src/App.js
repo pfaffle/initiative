@@ -12,10 +12,10 @@ class App extends Component {
       {turn: true, name: 'Riku', initiative: 14}
     ]
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">D&D Initiative Tracker</h1>
+      <div className='App'>
+        <header className='App-header'>
+          <img src={logo} className='App-logo' alt='logo' />
+          <h1 className='App-title'>D&D Initiative Tracker</h1>
         </header>
         <h2>Initiative Table</h2>
         <Flexbox justifyContent='center'>

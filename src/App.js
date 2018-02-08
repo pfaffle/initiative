@@ -3,14 +3,14 @@ import logo from './img/d20.png'
 import { Column, Table } from 'react-virtualized'
 import Flexbox from 'flexbox-react'
 import './App.css'
-import 'react-virtualized/styles.css' // only needs to be imported once
+import 'react-virtualized/styles.css'
+import { connect } from 'react-redux' // only needs to be imported once
+import PropTypes from 'prop-types'
 
-class App extends Component {
+// export the unconnected class for testing
+export class App extends Component {
   render () {
-    const tableRows = [
-      {turn: false, name: 'Karis', initiative: 16},
-      {turn: true, name: 'Riku', initiative: 14}
-    ]
+    const {initiativeList} = this.props
     return (
       <div className='App'>
         <header className='App-header'>
@@ -24,8 +24,8 @@ class App extends Component {
             height={300}
             headerHeight={20}
             rowHeight={20}
-            rowCount={tableRows.length}
-            rowGetter={({index}) => tableRows[index]}
+            rowCount={initiativeList.length}
+            rowGetter={({index}) => initiativeList[index]}
           >
             <Column
               label='Turn'
@@ -51,4 +51,11 @@ class App extends Component {
   }
 }
 
-export default App
+App.propTypes = {
+  initiativeList: PropTypes.array.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  initiativeList: state
+})
+export default connect(mapStateToProps)(App)

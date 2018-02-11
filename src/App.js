@@ -4,7 +4,7 @@ import { Column, Table } from 'react-virtualized'
 import Flexbox from 'flexbox-react'
 import './App.css'
 import 'react-virtualized/styles.css'
-import { connect } from 'react-redux' // only needs to be imported once
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addInitiative, nextTurn } from './reducers'
 
@@ -17,6 +17,7 @@ export class App extends Component {
       name: characterNames[Math.floor(Math.random() * characterNames.length)],
       initiative: Math.floor(Math.random() * 20)
     }
+    const rowHeight = 20
     return (
       <div className='App'>
         <header className='App-header'>
@@ -24,12 +25,12 @@ export class App extends Component {
           <h1 className='App-title'>D&D Initiative Tracker</h1>
         </header>
         <h2>Initiative Table</h2>
-        <Flexbox justifyContent='center'>
+        <Flexbox className='initiative-table' justifyContent='center'>
           <Table
             width={300}
-            height={300}
-            headerHeight={20}
-            rowHeight={20}
+            height={(rowHeight * (initiativeList.length + 1))}
+            headerHeight={rowHeight}
+            rowHeight={rowHeight}
             rowCount={initiativeList.length}
             rowGetter={({index}) => initiativeList[index]}
           >
@@ -59,7 +60,9 @@ export class App extends Component {
 }
 
 App.propTypes = {
-  initiativeList: PropTypes.array.isRequired
+  initiativeList: PropTypes.array.isRequired,
+  addInitiative: PropTypes.func.isRequired,
+  nextTurn: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({

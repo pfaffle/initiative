@@ -6,11 +6,17 @@ import './App.css'
 import 'react-virtualized/styles.css'
 import { connect } from 'react-redux' // only needs to be imported once
 import PropTypes from 'prop-types'
+import { addInitiative } from './reducers'
 
 // export the unconnected class for testing
 export class App extends Component {
   render () {
-    const {initiativeList} = this.props
+    const {initiativeList, addInitiative} = this.props
+    const characterNames = ['Karis', 'Riku', 'Fletcher', 'Mei', 'Madison', 'Morrison', 'Oskar']
+    const characterToAdd = {
+      name: characterNames[Math.floor(Math.random() * characterNames.length)],
+      initiative: Math.floor(Math.random() * 20)
+    }
     return (
       <div className='App'>
         <header className='App-header'>
@@ -46,6 +52,7 @@ export class App extends Component {
           </Table>
         </Flexbox>
         <button>Next</button>
+        <button onClick={() => addInitiative(characterToAdd)}>Add</button>
       </div>
     )
   }
@@ -58,4 +65,7 @@ App.propTypes = {
 const mapStateToProps = (state) => ({
   initiativeList: state
 })
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = {
+  addInitiative
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App)

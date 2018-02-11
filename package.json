@@ -11,6 +11,7 @@
     "react-scripts": "1.1.0",
     "react-virtualized": "^9.18.5",
     "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
     "standard": "^10.0.3"
   },
   "scripts": {

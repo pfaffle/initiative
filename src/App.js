@@ -6,12 +6,12 @@ import './App.css'
 import 'react-virtualized/styles.css'
 import { connect } from 'react-redux' // only needs to be imported once
 import PropTypes from 'prop-types'
-import { addInitiative } from './reducers'
+import { addInitiative, nextTurn } from './reducers'
 
 // export the unconnected class for testing
 export class App extends Component {
   render () {
-    const {initiativeList, addInitiative} = this.props
+    const {initiativeList, addInitiative, nextTurn} = this.props
     const characterNames = ['Karis', 'Riku', 'Fletcher', 'Mei', 'Madison', 'Morrison', 'Oskar']
     const characterToAdd = {
       name: characterNames[Math.floor(Math.random() * characterNames.length)],
@@ -51,7 +51,7 @@ export class App extends Component {
             />
           </Table>
         </Flexbox>
-        <button>Next</button>
+        <button onClick={nextTurn}>Next</button>
         <button onClick={() => addInitiative(characterToAdd)}>Add</button>
       </div>
     )
@@ -66,6 +66,7 @@ const mapStateToProps = (state) => ({
   initiativeList: state
 })
 const mapDispatchToProps = {
-  addInitiative
+  addInitiative,
+  nextTurn
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App)

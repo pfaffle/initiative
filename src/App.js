@@ -7,16 +7,12 @@ import 'react-virtualized/styles.css'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addInitiative, nextTurn } from './reducers'
+import AddInitiativeForm from './AddInitiativeForm'
 
 // export the unconnected class for testing
 export class App extends Component {
   render () {
     const {initiativeList, addInitiative, nextTurn} = this.props
-    const characterNames = ['Karis', 'Riku', 'Fletcher', 'Mei', 'Madison', 'Morrison', 'Oskar']
-    const characterToAdd = {
-      name: characterNames[Math.floor(Math.random() * characterNames.length)],
-      initiative: Math.floor(Math.random() * 20)
-    }
     const rowHeight = 20
     return (
       <div className='App'>
@@ -52,8 +48,8 @@ export class App extends Component {
             />
           </Table>
         </Flexbox>
-        <button onClick={nextTurn}>Next</button>
-        <button onClick={() => addInitiative(characterToAdd)}>Add</button>
+        <button onClick={nextTurn}>Next turn</button>
+        <AddInitiativeForm onSubmit={formValues => addInitiative(formValues)} />
       </div>
     )
   }
@@ -66,7 +62,7 @@ App.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  initiativeList: state
+  initiativeList: state.initiative
 })
 const mapDispatchToProps = {
   addInitiative,

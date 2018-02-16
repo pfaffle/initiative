@@ -1,3 +1,6 @@
+import { combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
+
 const ADD_INITIATIVE = 'ADD_INITIATIVE'
 const NEXT_TURN = 'NEXT_TURN'
 
@@ -37,7 +40,7 @@ const gotoNextTurn = state => {
 }
 
 // TODO add logic for when we're in combat vs. not, e.g. if we need to mark turn order & sort as we add
-export default function reducer (state = [], action = {}) {
+export function initiative (state = [], action = {}) {
   switch (action.type) {
     case ADD_INITIATIVE:
       const newState = state.concat(action.character)
@@ -53,3 +56,10 @@ export default function reducer (state = [], action = {}) {
       return state
   }
 }
+
+const reducer = combineReducers({
+  initiative: initiative,
+  form: formReducer
+})
+
+export default reducer

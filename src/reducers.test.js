@@ -1,4 +1,4 @@
-import reducer, { addInitiative, nextTurn } from './reducers'
+import { initiative, addInitiative, nextTurn } from './reducers'
 
 const initialState = [{
   name: 'Karis',
@@ -12,7 +12,7 @@ const initialState = [{
 
 describe('reducer', () => {
   it('should have a default state', () => {
-    expect(reducer()).toEqual([])
+    expect(initiative()).toEqual([])
   })
 })
 
@@ -22,7 +22,7 @@ describe('addInitiative', () => {
       name: 'Karis',
       initiative: 16
     }
-    expect(reducer(undefined, addInitiative(character))).toEqual([{
+    expect(initiative(undefined, addInitiative(character))).toEqual([{
       ...character,
       turn: true
     }])
@@ -32,7 +32,7 @@ describe('addInitiative', () => {
       name: 'newPerson',
       initiative: 18
     }
-    expect(reducer(initialState, addInitiative(newCharacter))).toEqual([{
+    expect(initiative(initialState, addInitiative(newCharacter))).toEqual([{
       name: 'newPerson',
       initiative: 18,
       turn: true
@@ -51,7 +51,7 @@ describe('addInitiative', () => {
       name: 'newPerson',
       initiative: 12
     }
-    expect(reducer(initialState, addInitiative(newCharacter))).toEqual([{
+    expect(initiative(initialState, addInitiative(newCharacter))).toEqual([{
       name: 'Karis',
       initiative: 16,
       turn: true
@@ -70,7 +70,7 @@ describe('addInitiative', () => {
       name: 'newPerson',
       initiative: 16
     }
-    expect(reducer(initialState, addInitiative(newCharacter))).toEqual([{
+    expect(initiative(initialState, addInitiative(newCharacter))).toEqual([{
       name: 'Karis',
       initiative: 16,
       turn: true
@@ -89,7 +89,7 @@ describe('addInitiative', () => {
       name: 'newPerson',
       initiative: 15
     }
-    expect(reducer(initialState, addInitiative(newCharacter))).toEqual([{
+    expect(initiative(initialState, addInitiative(newCharacter))).toEqual([{
       name: 'Karis',
       initiative: 16,
       turn: true
@@ -107,7 +107,7 @@ describe('addInitiative', () => {
 
 describe('nextTurn', () => {
   it('should do nothing for an empty initiative list', () => {
-    expect(reducer(undefined, nextTurn)).toEqual([])
+    expect(initiative(undefined, nextTurn)).toEqual([])
   })
   it('should do nothing for an initiative list with one person in it', () => {
     const initialState = [{
@@ -115,7 +115,7 @@ describe('nextTurn', () => {
       initiative: 16,
       turn: true
     }]
-    expect(reducer(initialState, nextTurn)).toEqual(initialState)
+    expect(initiative(initialState, nextTurn)).toEqual(initialState)
   })
   it('should move the current turn to the next person in the list', () => {
     const initialState = [{
@@ -127,7 +127,7 @@ describe('nextTurn', () => {
       initiative: 14,
       turn: false
     }]
-    expect(reducer(initialState, nextTurn())).toEqual([{
+    expect(initiative(initialState, nextTurn())).toEqual([{
       name: 'Karis',
       initiative: 16,
       turn: false
@@ -147,7 +147,7 @@ describe('nextTurn', () => {
       initiative: 14,
       turn: true
     }]
-    expect(reducer(initialState, nextTurn())).toEqual([{
+    expect(initiative(initialState, nextTurn())).toEqual([{
       name: 'Karis',
       initiative: 16,
       turn: true

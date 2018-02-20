@@ -1,4 +1,7 @@
-import { initiative, addInitiative, nextTurn } from './reducers'
+import {
+  initiative, addInitiative, nextTurn,
+  removeInitiative
+} from './reducers'
 
 const initialState = [{
   name: 'Karis',
@@ -155,6 +158,65 @@ describe('nextTurn', () => {
       name: 'Riku',
       initiative: 14,
       turn: false
+    }])
+  })
+})
+
+describe('removeInitiative', () => {
+  it('should return an empty list for an initiative list with one person in it', () => {
+    const initialState = [{
+      name: 'Karis',
+      initiative: 16,
+      turn: true
+    }]
+    expect(initiative(initialState, removeInitiative(0))).toEqual([])
+  })
+  it('should retain existing initiative if possible', () => {
+    const initialState = [{
+      name: 'Karis',
+      initiative: 16,
+      turn: true
+    }, {
+      name: 'Riku',
+      initiative: 14,
+      turn: false
+    }]
+    expect(initiative(initialState, removeInitiative(1))).toEqual([{
+      name: 'Karis',
+      initiative: 16,
+      turn: true
+    }])
+  })
+  it('should move the current turn to the next person in the list if removing the person who currently has initiative', () => {
+    const initialState = [{
+      name: 'Karis',
+      initiative: 16,
+      turn: true
+    }, {
+      name: 'Riku',
+      initiative: 14,
+      turn: false
+    }]
+    expect(initiative(initialState, removeInitiative(0))).toEqual([{
+      name: 'Riku',
+      initiative: 14,
+      turn: true
+    }])
+  })
+  it('should move the current turn to the first person in the list if removing the person who currently has initiative and that person is at the end of the list', () => {
+    const initialState = [{
+      name: 'Karis',
+      initiative: 16,
+      turn: false
+    }, {
+      name: 'Riku',
+      initiative: 14,
+      turn: true
+    }]
+    expect(initiative(initialState, removeInitiative(1))).toEqual([{
+      name: 'Karis',
+      initiative: 16,
+      turn: true
     }])
   })
 })

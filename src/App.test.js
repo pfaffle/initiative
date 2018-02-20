@@ -7,10 +7,11 @@ import { Provider } from 'react-redux'
 it('renders without crashing', () => {
   const div = document.createElement('div')
   ReactDOM.render(
-    <Provider store={createStore(() => {})}>
+    <Provider store={createStore(() => [])}>
       <App
         initiativeList={[]}
         addInitiative={() => {}}
+        removeInitiative={() => {}}
         nextTurn={() => {}} />
     </Provider>,
     div)

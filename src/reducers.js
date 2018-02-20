@@ -2,11 +2,17 @@ import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 
 const ADD_INITIATIVE = 'ADD_INITIATIVE'
+const REMOVE_INITIATIVE = 'REMOVE_INITIATIVE'
 const NEXT_TURN = 'NEXT_TURN'
 
 export const addInitiative = character => ({
   type: ADD_INITIATIVE,
   character
+})
+
+export const removeInitiative = index => ({
+  type: REMOVE_INITIATIVE,
+  index
 })
 
 export const nextTurn = () => ({
@@ -50,6 +56,20 @@ export function initiative (state = [], action = {}) {
           turn: false
         }))
       return determineTurnOrder(newState)
+    case REMOVE_INITIATIVE:
+      if (state.length === 0) {
+        return state
+      } else if (state.length < 2) {
+        return []
+      } else {
+        let newState
+        if (state.findIndex(character => character.turn) === action.index) {
+          newState = gotoNextTurn(state)
+        } else {
+          newState = state.concat()
+        }
+        return newState.slice(0, action.index).concat(newState.slice(action.index + 1, state.length))
+      }
     case NEXT_TURN:
       return gotoNextTurn(state)
     default:

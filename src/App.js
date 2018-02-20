@@ -6,13 +6,13 @@ import './App.css'
 import 'react-virtualized/styles.css'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addInitiative, nextTurn } from './reducers'
+import { addInitiative, nextTurn, removeInitiative } from './reducers'
 import AddInitiativeForm from './AddInitiativeForm'
 
 // export the unconnected class for testing
 export class App extends Component {
   render () {
-    const {initiativeList, addInitiative, nextTurn} = this.props
+    const {initiativeList, addInitiative, removeInitiative, nextTurn} = this.props
     const rowHeight = 20
     return (
       <div className='App'>
@@ -23,7 +23,7 @@ export class App extends Component {
         <h2>Initiative Table</h2>
         <Flexbox className='initiative-table' justifyContent='center'>
           <Table
-            width={300}
+            width={400}
             height={(rowHeight * (initiativeList.length + 1))}
             headerHeight={rowHeight}
             rowHeight={rowHeight}
@@ -46,6 +46,18 @@ export class App extends Component {
               dataKey='initiative'
               width={100}
             />
+            <Column
+              label=''
+              dataKey='remove'
+              width={25}
+              cellRenderer={({rowIndex}) => (
+                <div
+                  className='remove-link'
+                  onClick={() => { removeInitiative(rowIndex) }}>
+                  X
+                </div>
+              )}
+            />
           </Table>
         </Flexbox>
         <button onClick={nextTurn}>Next turn</button>
@@ -58,14 +70,16 @@ export class App extends Component {
 App.propTypes = {
   initiativeList: PropTypes.array.isRequired,
   addInitiative: PropTypes.func.isRequired,
+  removeInitiative: PropTypes.func.isRequired,
   nextTurn: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   initiativeList: state.initiative
 })
 const mapDispatchToProps = {
   addInitiative,
+  removeInitiative,
   nextTurn
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App)

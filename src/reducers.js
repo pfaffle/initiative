@@ -4,6 +4,7 @@ import { reducer as formReducer } from 'redux-form'
 const ADD_INITIATIVE = 'ADD_INITIATIVE'
 const REMOVE_INITIATIVE = 'REMOVE_INITIATIVE'
 const NEXT_TURN = 'NEXT_TURN'
+const TOGGLE_IN_COMBAT = 'TOGGLE_IN_COMBAT'
 
 export const addInitiative = character => ({
   type: ADD_INITIATIVE,
@@ -17,6 +18,10 @@ export const removeInitiative = index => ({
 
 export const nextTurn = () => ({
   type: NEXT_TURN
+})
+
+export const toggleInCombat = () => ({
+  type: TOGGLE_IN_COMBAT
 })
 
 // TODO consider modifier as a tiebreaker
@@ -45,7 +50,6 @@ const gotoNextTurn = initiativeList => {
   return newState
 }
 
-// TODO add logic for when we're in combat vs. not, e.g. if we need to mark turn order & sort as we add
 export function initiative (state = {
   inCombat: false,
   initiativeList: []
@@ -86,6 +90,11 @@ export function initiative (state = {
       return {
         ...state,
         initiativeList: gotoNextTurn(state.initiativeList)
+      }
+    case TOGGLE_IN_COMBAT:
+      return {
+        ...state,
+        inCombat: !state.inCombat
       }
     default:
       return state

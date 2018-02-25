@@ -12,7 +12,8 @@ it('renders without crashing', () => {
         initiativeList={[]}
         addInitiative={() => {}}
         removeInitiative={() => {}}
-        nextTurn={() => {}} />
+        nextTurn={() => {}}
+        toggleInCombat={() => {}} />
     </Provider>,
     div)
   ReactDOM.unmountComponentAtNode(div)

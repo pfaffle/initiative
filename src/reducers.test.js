@@ -2,7 +2,7 @@ import {
   addInitiative,
   initiative,
   nextTurn,
-  removeInitiative
+  removeInitiative, toggleInCombat
 } from './reducers'
 
 const initialState = {
@@ -279,6 +279,29 @@ describe('removeInitiative', () => {
         initiative: 16,
         turn: true
       }]
+    })
+  })
+})
+
+describe('toggleInCombat', () => {
+  it('switches the inCombat flag to true when it\'s false', () => {
+    const initialState = {
+      inCombat: false,
+      initiativeList: []
+    }
+    expect(initiative(initialState, toggleInCombat())).toEqual({
+      inCombat: true,
+      initiativeList: []
+    })
+  })
+  it('switches the inCombat flag to false when it\'s true', () => {
+    const initialState = {
+      inCombat: true,
+      initiativeList: []
+    }
+    expect(initiative(initialState, toggleInCombat())).toEqual({
+      inCombat: false,
+      initiativeList: []
     })
   })
 })

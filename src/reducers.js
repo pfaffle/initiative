@@ -30,12 +30,12 @@ const determineTurnOrder = state => {
   return state
 }
 
-const gotoNextTurn = state => {
-  if (state.length === 0 || state.length === 1) {
-    return state
+const gotoNextTurn = initiativeList => {
+  if (initiativeList.length === 0 || initiativeList.length === 1) {
+    return initiativeList
   }
-  const index = state.findIndex(character => character.turn)
-  const newState = state.concat()
+  const index = initiativeList.findIndex(character => character.turn)
+  const newState = initiativeList.concat()
   newState[index].turn = false
   if (newState.length === (index + 1)) {
     newState[0].turn = true
@@ -46,32 +46,47 @@ const gotoNextTurn = state => {
 }
 
 // TODO add logic for when we're in combat vs. not, e.g. if we need to mark turn order & sort as we add
-export function initiative (state = [], action = {}) {
+export function initiative (state = {
+  inCombat: false,
+  initiativeList: []
+}, action = {}) {
   switch (action.type) {
     case ADD_INITIATIVE:
-      const newState = state.concat(action.character)
+      const newInitiativeList = state.initiativeList.concat(action.character)
         .sort(compareInitiativeDescending)
         .map(character => ({
           ...character,
           turn: false
         }))
-      return determineTurnOrder(newState)
+      return {
+        ...state,
+        initiativeList: determineTurnOrder(newInitiativeList)
+      }
     case REMOVE_INITIATIVE:
-      if (state.length === 0) {
+      if (state.initiativeList.length === 0) {
         return state
-      } else if (state.length < 2) {
-        return []
-      } else {
-        let newState
-        if (state.findIndex(character => character.turn) === action.index) {
-          newState = gotoNextTurn(state)
-        } else {
-          newState = state.concat()
+      } else if (state.initiativeList.length < 2) {
+        return {
+          ...state,
+          initiativeList: []
         }
-        return newState.slice(0, action.index).concat(newState.slice(action.index + 1, state.length))
+      } else {
+        let newInitiativeList
+        if (state.initiativeList.findIndex(character => character.turn) === action.index) {
+          newInitiativeList = gotoNextTurn(state.initiativeList)
+        } else {
+          newInitiativeList = state.initiativeList.concat()
+        }
+        return {
+          ...state,
+          initiativeList: newInitiativeList.slice(0, action.index).concat(newInitiativeList.slice(action.index + 1, state.length))
+        }
       }
     case NEXT_TURN:
-      return gotoNextTurn(state)
+      return {
+        ...state,
+        initiativeList: gotoNextTurn(state.initiativeList)
+      }
     default:
       return state
   }

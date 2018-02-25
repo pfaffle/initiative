@@ -1,4 +1,17 @@
 language: node_js
 node_js:
   - "node"
-script: yarn lint && yarn test
+jobs:
+  include:
+    - script: yarn test
+    - script: yarn lint
+    - stage: build
+      script: yarn build
+    - stage: deploy
+      script: echo todo
+stages:
+  - test
+  - name: build
+    if: branch = master AND type = push
+  - name: deploy
+    if: branch = master AND type = push

@@ -1,18 +1,21 @@
 language: node_js
 node_js:
-  - "node"
+- node
 jobs:
   include:
-    - script: yarn test
-    - script: yarn lint
-    - stage: build
-      script: yarn build
-    - stage: deploy
-      script: echo todo
+  - script: yarn test
+  - script: yarn lint
+  - stage: deploy
+    script:
+    - yarn build
+    - mkdir -p ~/.ssh
+    - cat fingerprints >> ~/.ssh/known_hosts
+    - rsync -e "ssh -i $TRAVIS_BUILD_DIR/deploy_key" -r --delete-after $TRAVIS_BUILD_DIR/build/ github@pfaffle.net:~/www/initiative/
 stages:
-  - name: test
-    if: branch = master OR type = pull_request
-  - name: build
-    if: branch = master AND type = push
-  - name: deploy
-    if: branch = master AND type = push
+- name: test
+  if: branch = master OR type = pull_request
+- name: deploy
+  if: branch = master AND type = push
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_0944e2b2be3c_key -iv $encrypted_0944e2b2be3c_iv
+  -in deploy_key.enc -out .\\deploy_key -d

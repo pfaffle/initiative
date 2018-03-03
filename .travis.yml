@@ -7,6 +7,8 @@ jobs:
   - script: yarn lint
   - stage: deploy
     script:
+    - openssl aes-256-cbc -K $encrypted_0944e2b2be3c_key -iv $encrypted_0944e2b2be3c_iv
+      -in deploy_key.enc -out deploy_key -d
     - yarn build
     - mkdir -p ~/.ssh
     - cat fingerprints >> ~/.ssh/known_hosts
@@ -16,6 +18,3 @@ stages:
   if: branch = master OR type = pull_request
 - name: deploy
   if: branch = master AND type = push
-before_deploy:
-- openssl aes-256-cbc -K $encrypted_0944e2b2be3c_key -iv $encrypted_0944e2b2be3c_iv
-  -in deploy_key.enc -out .\\deploy_key -d

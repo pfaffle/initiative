@@ -64,7 +64,7 @@ export class App extends Component {
           </Table>
         </Flexbox>
         <div className='in-combat'>In combat?
-          <input type="checkbox" checked={inCombat} onClick={toggleInCombat} />
+          <input type='checkbox' checked={inCombat} onClick={toggleInCombat} />
         </div>
         <button onClick={nextTurn}>Next turn</button>
         <AddInitiativeForm onSubmit={formValues => addInitiative(formValues)} />

@@ -13,7 +13,7 @@ jobs:
     - yarn build
     - mkdir -p ~/.ssh
     - cat fingerprints >> ~/.ssh/known_hosts
-    - rsync -e "ssh -i $TRAVIS_BUILD_DIR/deploy_key" -rgp --delete-after $TRAVIS_BUILD_DIR/build/
+    - rsync -e "ssh -i $TRAVIS_BUILD_DIR/deploy_key" -r --inplace --delete-after $TRAVIS_BUILD_DIR/build/
       github@pfaffle.net:~/www/initiative/
 stages:
 - name: test

@@ -7,6 +7,7 @@ jobs:
   - script: yarn lint
   - stage: deploy
     script:
+    - umask 0077
     - openssl aes-256-cbc -K $encrypted_0cd9b55b5901_key -iv $encrypted_0cd9b55b5901_iv
       -in deploy_key.enc -out deploy_key -d
     - yarn build

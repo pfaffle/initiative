@@ -6,13 +6,16 @@ import './App.css'
 import 'react-virtualized/styles.css'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addInitiative, nextTurn, removeInitiative } from './reducers'
+import {
+  addInitiative, nextTurn, removeInitiative,
+  toggleInCombat
+} from './reducers'
 import AddInitiativeForm from './AddInitiativeForm'
 
 // export the unconnected class for testing
 export class App extends Component {
   render () {
-    const {initiativeList, addInitiative, removeInitiative, nextTurn} = this.props
+    const {initiativeList, addInitiative, removeInitiative, nextTurn, inCombat, toggleInCombat} = this.props
     const rowHeight = 20
     return (
       <div className='App'>
@@ -60,6 +63,9 @@ export class App extends Component {
             />
           </Table>
         </Flexbox>
+        <div className='in-combat'>In combat?
+          <input type='checkbox' checked={inCombat} onClick={toggleInCombat} />
+        </div>
         <button onClick={nextTurn}>Next turn</button>
         <AddInitiativeForm onSubmit={formValues => addInitiative(formValues)} />
       </div>
@@ -71,15 +77,19 @@ App.propTypes = {
   initiativeList: PropTypes.array.isRequired,
   addInitiative: PropTypes.func.isRequired,
   removeInitiative: PropTypes.func.isRequired,
-  nextTurn: PropTypes.func.isRequired
+  nextTurn: PropTypes.func.isRequired,
+  toggleInCombat: PropTypes.func.isRequired,
+  inCombat: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => ({
-  initiativeList: state.initiative
+  initiativeList: state.initiative.initiativeList,
+  inCombat: state.initiative.inCombat
 })
 const mapDispatchToProps = {
   addInitiative,
   removeInitiative,
-  nextTurn
+  nextTurn,
+  toggleInCombat
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App)

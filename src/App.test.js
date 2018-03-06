@@ -13,7 +13,8 @@ it('renders without crashing', () => {
         addInitiative={() => {}}
         removeInitiative={() => {}}
         nextTurn={() => {}}
-        toggleInCombat={() => {}} />
+        toggleInCombat={() => {}}
+        inCombat={false} />
     </Provider>,
     div)
   ReactDOM.unmountComponentAtNode(div)

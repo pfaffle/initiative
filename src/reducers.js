@@ -29,10 +29,12 @@ const compareInitiativeDescending = function (a, b) {
   return b.initiative - a.initiative
 }
 
-// expects sorted array
-const determineTurnOrder = state => {
-  state[0].turn = true
-  return state
+const resetTurnOrder = initiativeList => {
+  initiativeList.forEach(character => {
+    character.turn = false
+  })
+  initiativeList[0].turn = true
+  return initiativeList
 }
 
 const gotoNextTurn = initiativeList => {
@@ -56,15 +58,22 @@ export function initiative (state = {
 }, action = {}) {
   switch (action.type) {
     case ADD_INITIATIVE:
-      const newInitiativeList = state.initiativeList.concat(action.character)
-        .sort(compareInitiativeDescending)
-        .map(character => ({
-          ...character,
-          turn: false
-        }))
+      if (state.initiativeList.length === 0) {
+        return {
+          ...state,
+          initiativeList: [{
+            ...action.character,
+            turn: true
+          }]
+        }
+      }
+      const newInitiativeList = state.initiativeList.concat({
+        ...action.character,
+        turn: false
+      }).sort(compareInitiativeDescending)
       return {
         ...state,
-        initiativeList: determineTurnOrder(newInitiativeList)
+        initiativeList: state.inCombat ? newInitiativeList : resetTurnOrder(newInitiativeList)
       }
     case REMOVE_INITIATIVE:
       if (state.initiativeList.length === 0) {

@@ -10,6 +10,7 @@ jobs:
     - umask 0077
     - openssl aes-256-cbc -K $encrypted_0cd9b55b5901_key -iv $encrypted_0cd9b55b5901_iv
       -in deploy_key.enc -out deploy_key -d
+    - umask 0002
     - yarn build
     - mkdir -p ~/.ssh
     - cat fingerprints >> ~/.ssh/known_hosts
